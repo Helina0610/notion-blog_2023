@@ -1,20 +1,30 @@
 import { getDatabaseItems } from '@/cms/notionClient';
+import { ParseDatabaseItemsType, parseDatabaseItems  } from '@/utils/parseDatabaseItems';
 import { GetStaticProps } from 'next';
 import React from 'react'
 
-const index = () => {
+interface HomeProps {
+  databaseItems : ParseDatabaseItemsType[]
+}
+
+const Home = ({databaseItems}:HomeProps) => {
   return (
-    <div>index</div>
+    <div>Home</div>
   )
 }
 
-export default index;
+export default Home;
 
-export const getStaticProps : GetStaticProps = async () => {
+export const getStaticProps : GetStaticProps<HomeProps> = async () => {
   if(!process.env.DATABASE_ID) throw new Error('DATABASE_ID is not undifibed');
   const databaseItems = await getDatabaseItems(process.env.DATABASE_ID)
-  // console.log("databaseItems :>>",databaseItems)
+  
+  const parseDataes = parseDatabaseItems(databaseItems)
+  console.log("parseDataes :>>",parseDataes)
+  const parseDatabaseItemJSON = JSON.parse(JSON.stringify(parseDataes))
   return{
-    props : {}
+    props : {
+      databaseItems : parseDatabaseItemJSON
+    }
   }
 }
