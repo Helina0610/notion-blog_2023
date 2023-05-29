@@ -17,6 +17,7 @@ const navLinks = [
 
 const Header = () => {
   return (
+    <>
     <header className='bg-white fixed top-0 w-full z-50'>
         <nav className='p-4 flex flex-row justify-between max-w-5xl mx-auto'>
             <h1 className='font-black text-4xl'>
@@ -40,6 +41,8 @@ const Header = () => {
             </ul>
         </nav>
     </header>
+    <div className='h-[72px]' />
+   </>
   )
 }
 
