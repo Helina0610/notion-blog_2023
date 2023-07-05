@@ -22,16 +22,18 @@ export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabase
         // item에 properties 가 없으면 PartialPageObjectResponse 타입이므로 타입가드 해줘야함
         if(!('properties' in item)) return acc; //acc 스킵
         const {id, icon, cover} = item;
-
+  
         const {태그, 작성일, 설명, 이름} = item.properties
 
         const parsedCover = cover?.type === "file" ? cover.file.url : cover?.external.url ?? ""
-        
+        // cover?.type === "external" ? cover.external.url : ""
+        // ?? "" null 일 경우
+        console.log(item.properties)
         const published = (작성일.type === "date" ? 작성일.date?.start : "" ) ?? "";
 
         const decsription = (설명.type === "rich_text" ? 설명.rich_text[0]?.plain_text : "") ?? "";
         
-        const title = (이름.type === "rich_text" ? 이름.rich_text[0]?.plain_text : "") ?? "";
+        const title = (이름.type === "title" ? 이름.title[0]?.plain_text : "") ?? "";
 
         const tags = 태그.type === "multi_select" ? 태그.multi_select : [];
 
@@ -44,10 +46,16 @@ export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabase
             title,
             tags,        
         };
+        //새로운 배열을 만들어서 넘겨준다
         return [
-            ...acc
+            ...acc //새로운 배열
             , parseResult 
         ]
     } , []);
     return parseItems;
 }
+
+// recode<string, number>
+// const recode = {
+//    string : 1,
+//}
