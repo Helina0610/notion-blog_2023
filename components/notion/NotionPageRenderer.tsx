@@ -50,7 +50,7 @@ const NotionPageRenderer = ({recordMap} : NotionPageRendererProps) => {
       fullPage={true} 
       disableHeader
       showTableOfContents
-      darkMode={true}
+      // darkMode={true}
       components={{
         Code
         ,Collection
@@ -58,7 +58,12 @@ const NotionPageRenderer = ({recordMap} : NotionPageRendererProps) => {
         ,Pdf
         ,Modal
         ,nextLink
-        ,nextImage}}/>
+        ,nextImage
+        ,propertyDateValue: ({ data }) => data[0][1][0][1].start_date
+        ,propertySelectValue : ({option : {id, color, value : name}}) => (
+          <TagItem key={id} tagItem={{color, id, name}}/>
+        )
+      }}/>
   )
 }
 

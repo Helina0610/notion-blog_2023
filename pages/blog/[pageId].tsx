@@ -28,7 +28,8 @@ export const getStaticProps : GetStaticProps<  DetailBlogPageProps,   DetailBlog
   return {
     props : {
       recordMap,
-    }
+    },
+    revalidate : 300 //생명수명 유저가 나간 뒤 5분을 세고 5분동안 다른 유저가 들어오면 새롭게 빌드한 페이지 보여줌 
   }
 }
 
