@@ -12,7 +12,7 @@ const TagItem = ({tagItem} : TagItemPros) => {
   const {name, color} = tagItem;
   return (
     <li>
-      <Link href={`tag/${name.toLocaleLowerCase()}`}>
+      <Link href={`/tag/${name.toLocaleLowerCase()}`}>
         <a className=' hover:underline px-2 py-1 rounded-full font-light' style={{backgroundColor : COLOR_TABLE[color]}}>{name}</a>
       </Link>
     </li>
