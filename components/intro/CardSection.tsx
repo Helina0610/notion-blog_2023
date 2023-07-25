@@ -1,10 +1,10 @@
 import React from 'react'
 import { CardList } from '../card/CardList'
-import { ParseDatabaseItemsType  } from '@/utils/parseDatabaseItems';
+import { ParsedDatabaseItemType  } from '@/utils/parseDatabaseItems';
 
 
 interface CardSectionProps {
-	cardItems : ParseDatabaseItemsType[];
+	cardItems : ParsedDatabaseItemType[];
 }
 
 export const CardSection = ({cardItems} : CardSectionProps) => {

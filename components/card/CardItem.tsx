@@ -1,6 +1,6 @@
 import exp from 'constants'
 import React from 'react'
-import { ParseDatabaseItemsType  } from '@/utils/parseDatabaseItems';
+import { ParsedDatabaseItemType  } from '@/utils/parseDatabaseItems';
 import Link from 'next/link';
 import Image from 'next/image';
 import { describe } from 'node:test';
@@ -8,7 +8,7 @@ import IconRenderer from './IconRenderer';
 import TageList from './tag/TageList';
 
 interface CardItemProps {
-	cardItem : ParseDatabaseItemsType
+	cardItem : ParsedDatabaseItemType
 }
 
 export const CardItem = ({cardItem} : CardItemProps) => {

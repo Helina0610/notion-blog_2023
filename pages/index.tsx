@@ -1,12 +1,12 @@
 import { getDatabaseItems } from '@/cms/notionClient';
 import CardSection from '@/components/intro/CardSection';
 import { HeroSection } from '@/components/intro/HeroSection';
-import { ParseDatabaseItemsType, parseDatabaseItems  } from '@/utils/parseDatabaseItems';
+import { ParsedDatabaseItemType, parseDatabaseItems  } from '@/utils/parseDatabaseItems';
 import { GetStaticProps } from 'next';
 import React from 'react'
 
 interface HomeProps {
-  databaseItems : ParseDatabaseItemsType[]
+  databaseItems : ParsedDatabaseItemType[]
 }
 
 const Home = ({databaseItems}:HomeProps) => {

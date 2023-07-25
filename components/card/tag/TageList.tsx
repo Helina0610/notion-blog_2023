@@ -1,9 +1,9 @@
 import React from 'react'
 import TagItem from './TagItem'
-import { ParseDatabaseItemsType  } from '@/utils/parseDatabaseItems';
+import { ParsedDatabaseItemType  } from '@/utils/parseDatabaseItems';
 
 interface TageListProps {
-  tags : ParseDatabaseItemsType['tags']
+  tags : ParsedDatabaseItemType['tags']
 }
 const TageList = ({tags} : TageListProps) => {
   return (
