@@ -22,7 +22,7 @@ export const CardItem = ({cardItem} : CardItemProps) => {
 						</div>
 						<div className='p-6 flext flex-col gap-4 '>
 							<h4 className='font-bold text-2xl group-hover:text-blue-600 transition-colors flex flex-row items-center gap-1'>
-								<IconRenderer icon={icon}/>
+								<IconRenderer icon={icon} alt={title}/>
 								{title}
 							</h4>
 							{ decsription ? (<p className='font-medium text-gray-600'>{decsription}</p>) : null}
