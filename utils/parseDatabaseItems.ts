@@ -1,7 +1,7 @@
 import { getDatabaseItems } from "@/cms/notionClient";
 import {PageObjectResponse , MultiSelectPropertyItemObjectResponse} from "@notionhq/client/build/src/api-endpoints"
 
-export interface ParseDatabaseItemsType {
+export interface ParsedDatabaseItemType {
     id : string;
     cover : string;
     icon : PageObjectResponse['icon'];
@@ -16,7 +16,7 @@ export interface ParseDatabaseItemsType {
 //Awaited<ReturnType<typeof getDatabaseItems>> : getDatabaseItems 는 promise 를 가지고 있음,
 // databaseItems 는 promise 의 결과값을 가져옴 -> promise 를 벗겨줘야 함
 export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabaseItems>>) => {
-    const parseItems = items.reduce<ParseDatabaseItemsType[]>((acc, item) => {
+    const parseItems = items.reduce<ParsedDatabaseItemType[]>((acc, item) => {
         //items 는 Array<PageObjectResponse | PartialPageObjectResponse>; 
         // PartialPageObjectResponse 는 Object, id 만 가지고 있음 
         // item에 properties 가 없으면 PartialPageObjectResponse 타입이므로 타입가드 해줘야함
@@ -37,7 +37,7 @@ export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabase
 
         const tags = 태그.type === "multi_select" ? 태그.multi_select : [];
 
-        const parseResult:ParseDatabaseItemsType = {
+        const parseResult:ParsedDatabaseItemType = {
             id,
             icon,
             cover : parsedCover,

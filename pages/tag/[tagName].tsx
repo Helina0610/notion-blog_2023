@@ -1,43 +1,52 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react'
-import { getDatabaseItems, getPageContent } from "@/cms/notionClient";
+import { getDatabaseItems } from "@/cms/notionClient";
 import { getAllTags } from '@/utils/getAllTags';
-import { ParseDatabaseItemsType, parseDatabaseItems } from '@/utils/parseDatabaseItems';
+import { parseDatabaseItems , ParsedDatabaseItemType } from '@/utils/parseDatabaseItems';
+import TagHeroSection from '@/components/tags/TagHeroSection';
+import CardSection from "@/components/intro/CardSection";
 
 interface TagPageProps {
-  databaseItmes : ParseDatabaseItemsType[]
-}
-const TagePage = ({databaseItmes}:TagPageProps) => {
-  return (
-    <div>TagName</div>
-  )
-}
-
-export default TagePage;
-
-interface TagPageParams extends ParsedUrlQuery {
+  databaseItems : ParsedDatabaseItemType[],
   tagName : string
 }
+const TagPage = ({databaseItems, tagName}:TagPageProps) => {
+  return (
+    <div>
+      <TagHeroSection title={`#${tagName}`}/>
+      <CardSection cardItems={databaseItems} />
 
-export const getStaticProps : GetStaticProps<TagPageProps,TagPageParams> = async ({params}) => {
+    </div>
+  );
+};
+
+export default TagPage;
+
+interface TagPageParams extends ParsedUrlQuery {
+  tagName : string;
+}
+
+export const getStaticProps : GetStaticProps< TagPageProps, TagPageParams > =async ({params}) => {
   const {tagName} = params!;
-  if(!process.env.DATABASE_ID) throw new Error('DATABASE_ID is not undifibed');
+  const pascalTagName = tagName[0].toUpperCase() + tagName.slice(1);
+
+  if(!process.env.DATABASE_ID) throw new Error("DATABASE_ID is not defined");
   const databaseItems = await getDatabaseItems(process.env.DATABASE_ID,{
-    filter  : {
-      tagName : tagName[0].toUpperCase() + tagName.slice(1),
-    }
+    filter : {
+      tagName : pascalTagName,
+    },
   });
 
-  const parsedDatabaseItems = parseDatabaseItems(databaseItems)
+  const parsedDatabaseItems = parseDatabaseItems(databaseItems);
 
   return {
     props : {
-      databaseItmes : parsedDatabaseItems
+      databaseItems : parsedDatabaseItems,
+      tagName : pascalTagName
     }
   }
 }
-
 
 
 
