@@ -30,6 +30,7 @@ export const getStaticProps : GetStaticProps<HomeProps> = async () => {
   return{
     props : {
       databaseItems : parseDatabaseItemJSON
-    }
+    },
+    revalidate : 300 //5분마다 업데이트
   }
 }
