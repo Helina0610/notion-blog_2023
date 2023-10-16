@@ -2,10 +2,10 @@ import React from 'react'
 import TagItem from './TagItem'
 import { ParsedDatabaseItemType  } from '@/utils/parseDatabaseItems';
 
-interface TageListProps {
+interface TagListProps {
   tags : ParsedDatabaseItemType['tags']
 }
-const TageList = ({tags} : TageListProps) => {
+const TagList = ({tags} : TagListProps) => {
   return (
     <ul className='p-4 flex flex-row flex-wrap gap-2'>
       {
@@ -18,4 +18,4 @@ const TageList = ({tags} : TageListProps) => {
   )
 }
 
-export default TageList
+export default TagList

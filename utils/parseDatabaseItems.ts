@@ -21,6 +21,8 @@ export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabase
         // PartialPageObjectResponse 는 Object, id 만 가지고 있음 
         // item에 properties 가 없으면 PartialPageObjectResponse 타입이므로 타입가드 해줘야함
         if(!('properties' in item)) return acc; //acc 스킵
+        if(item.parent.type !== "database_id") return acc; //데이터베이스 아이디가 아닌것(Block_id) 스킵
+
         const {id, icon, cover} = item;
   
         const {태그, 작성일, 설명, 이름} = item.properties

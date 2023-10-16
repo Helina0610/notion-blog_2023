@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { describe } from 'node:test';
 import IconRenderer from './IconRenderer';
-import TageList from './tag/TageList';
+import TagList from './tag/TagList';
 
 interface CardItemProps {
 	cardItem : ParsedDatabaseItemType
@@ -30,7 +30,7 @@ export const CardItem = ({cardItem} : CardItemProps) => {
 						</div>
 					</a>
 				</Link>
-        { tags.length > 0 ? <TageList tags={tags}/> : null}
+        { tags.length > 0 ? <TagList tags={tags}/> : null}
     </li>
   )
 }
