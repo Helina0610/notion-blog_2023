@@ -6,16 +6,18 @@ import { getAllTags } from '@/utils/getAllTags';
 import { parseDatabaseItems , ParsedDatabaseItemType } from '@/utils/parseDatabaseItems';
 import TagHeroSection from '@/components/tags/TagHeroSection';
 import CardSection from "@/components/intro/CardSection";
+import { ITEMS_PER_PAGE } from '@/const/const';
 
 interface TagPageProps {
   databaseItems : ParsedDatabaseItemType[],
-  tagName : string
+  tagName : string,
+  totalLength : number,
 }
-const TagPage = ({databaseItems, tagName}:TagPageProps) => {
+const TagPage = ({databaseItems, tagName , totalLength }:TagPageProps) => {
   return (
     <div>
       <TagHeroSection title={`#${tagName}`}/>
-      <CardSection cardItems={databaseItems} />
+      <CardSection cardItems={databaseItems} totalLength={totalLength} />
 
     </div>
   );
@@ -38,12 +40,13 @@ export const getStaticProps : GetStaticProps< TagPageProps, TagPageParams > =asy
     },
   });
 
-  const parsedDatabaseItems = parseDatabaseItems(databaseItems);
+  const parsedDatabaseItems = parseDatabaseItems(databaseItems.slice(0,ITEMS_PER_PAGE));
 
   return {
     props : {
       databaseItems : parsedDatabaseItems,
-      tagName : pascalTagName
+      tagName : pascalTagName,
+      totalLength : databaseItems.length
     }
   }
 }
