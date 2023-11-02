@@ -1,6 +1,8 @@
 import React from 'react'
 import { CardList } from '../card/CardList'
 import { ParsedDatabaseItemType  } from '@/utils/parseDatabaseItems';
+import { Pagination } from '../common/Pagination';
+import { ITEMS_PER_PAGE } from '@/const/const';
 
 
 interface CardSectionProps {
@@ -14,7 +16,7 @@ export const CardSection = ({cardItems} : CardSectionProps) => {
 				<h3 className='font-bold text-3xl'>Post</h3>
 
 				<CardList cardItems={cardItems}/>
-			
+        <Pagination totalPage={Math.ceil(cardItems.length / ITEMS_PER_PAGE) }/>
 			</div>
     </section>
   )
