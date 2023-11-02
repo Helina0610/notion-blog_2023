@@ -8,7 +8,7 @@ import TagHeroSection from '@/components/tags/TagHeroSection';
 import CardSection from "@/components/intro/CardSection";
 import { ITEMS_PER_PAGE } from '@/const/const';
 
-interface TagPageProps {
+export interface TagPageProps {
   databaseItems : ParsedDatabaseItemType[],
   tagName : string,
   totalLength : number,
@@ -27,10 +27,11 @@ export default TagPage;
 
 interface TagPageParams extends ParsedUrlQuery {
   tagName : string;
+  page : string;
 }
 
 export const getStaticProps : GetStaticProps< TagPageProps, TagPageParams > =async ({params}) => {
-  const {tagName} = params!;
+  const {tagName, page} = params!;
   const pascalTagName = tagName[0].toUpperCase() + tagName.slice(1);
 
   if(!process.env.DATABASE_ID) throw new Error("DATABASE_ID is not defined");
@@ -40,7 +41,10 @@ export const getStaticProps : GetStaticProps< TagPageProps, TagPageParams > =asy
     },
   });
 
-  const parsedDatabaseItems = parseDatabaseItems(databaseItems.slice(0,ITEMS_PER_PAGE));
+  const parsedDatabaseItems = parseDatabaseItems(databaseItems.slice(
+    (parseInt(page) - 1) * ITEMS_PER_PAGE,
+    parseInt(page) * ITEMS_PER_PAGE
+  ));
 
   return {
     props : {
