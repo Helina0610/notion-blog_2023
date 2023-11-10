@@ -1,5 +1,6 @@
 import { getDatabaseItems } from "@/cms/notionClient";
 import {PageObjectResponse , MultiSelectPropertyItemObjectResponse} from "@notionhq/client/build/src/api-endpoints"
+import { MakePreviewImage } from "./previewImage";
 
 export interface ParsedDatabaseItemType {
     id : string;
@@ -9,6 +10,7 @@ export interface ParsedDatabaseItemType {
     published : string;
     decsription : string;
     title : string;
+    previewImage? : MakePreviewImage
 }
 
 // getDatabaseItems 함수의 리턴값이 response.result 이므로

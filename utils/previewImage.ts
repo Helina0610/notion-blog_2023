@@ -2,6 +2,7 @@ import axios from "axios";
 import got from "got";
 import lqip from "lqip-modern";
 import { PreviewImage } from "notion-types";
+import { ParsedDatabaseItemType } from "./parseDatabaseItems";
 
 //got 13버전으로 다시 해보기
 export const makePreviewImage =async (url:string) => {
@@ -28,4 +29,20 @@ export const makePreviewImage =async (url:string) => {
 
 };
 
+export type MakePreviewImage = Awaited<ReturnType<typeof makePreviewImage>>
 
+//Promise.all 공부 
+export const insertPreviewImage =async (databaseItems:ParsedDatabaseItemType[]) => {
+  const previewImage = Promise.all(databaseItems.map(async(item) => {
+    const {cover} = item;
+
+    const previewImage = await makePreviewImage(cover);
+
+    return {
+      ...item,
+      previewImage
+    }
+  }));
+
+  return previewImage; 
+}

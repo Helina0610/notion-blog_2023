@@ -6,19 +6,20 @@ import Image from 'next/image';
 import { describe } from 'node:test';
 import IconRenderer from './IconRenderer';
 import TagList from './tag/TagList';
+import { DEFAULT_BLUR_BASE64 } from '@/const/const';
 
 interface CardItemProps {
 	cardItem : ParsedDatabaseItemType
 }
 
 export const CardItem = ({cardItem} : CardItemProps) => {
-	const {cover,decsription,icon,id,published, tags,title} = cardItem
+	const {cover,decsription,icon,id,published, tags,title, previewImage} = cardItem
   return (
     <li className='rounded-3xl overflow-hidden shadow-lg group flex  flex-col'>
         <Link href={`blog/${id}`}>
 					<a className=' flex-grow'>
 						<div className='relative aspect-[1.3/1]'>
-							<Image src={cover} alt={title} layout='fill' className=' group-hover:scale-105 translate-transform'/>
+							<Image src={cover} alt={title} layout='fill' className=' group-hover:scale-105 translate-transform' placeholder='blur' blurDataURL={previewImage?.dataURIBase64 ?? DEFAULT_BLUR_BASE64}/>
 						</div>
 						<div className='p-6 flext flex-col gap-4 '>
 							<h4 className='font-bold text-2xl group-hover:text-blue-600 transition-colors flex flex-row items-center gap-1'>
