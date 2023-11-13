@@ -10,7 +10,11 @@ export interface ParsedDatabaseItemType {
     published : string;
     decsription : string;
     title : string;
-    previewImage? : MakePreviewImage
+    previewImage? : MakePreviewImage;
+    proxy : {
+      cover : string,
+      icon : string,
+    }
 }
 
 // getDatabaseItems 함수의 리턴값이 response.result 이므로
@@ -25,7 +29,7 @@ export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabase
         if(!('properties' in item)) return acc; //acc 스킵
         if(item.parent.type !== "database_id") return acc; //데이터베이스 아이디가 아닌것(Block_id) 스킵
 
-        const {id, icon, cover} = item;
+        const {id, icon, cover, last_edited_time} = item;
   
         const {태그, 작성일, 설명, 이름} = item.properties
 
@@ -41,6 +45,9 @@ export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabase
 
         const tags = 태그.type === "multi_select" ? 태그.multi_select : [];
 
+        const proxyCoverUrl = `/api/getImageFromNotion?type=cover&pageId=${id}&lastEditedTime=${last_edited_time}`;
+        const proxyIconUrl = `/api/getImageFromNotion?type=icon&pageId=${id}&lastEditedTime=${last_edited_time}`;
+
         const parseResult:ParsedDatabaseItemType = {
             id,
             icon,
@@ -48,7 +55,11 @@ export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabase
             published,
             decsription,
             title,
-            tags,        
+            tags,
+            proxy : {
+              cover : proxyCoverUrl,
+              icon : proxyIconUrl,
+            }      
         };
         //새로운 배열을 만들어서 넘겨준다
         return [

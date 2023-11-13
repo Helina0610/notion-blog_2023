@@ -13,17 +13,17 @@ interface CardItemProps {
 }
 
 export const CardItem = ({cardItem} : CardItemProps) => {
-	const {cover,decsription,icon,id,published, tags,title, previewImage} = cardItem
+	const {decsription,icon,id,published, tags,title, previewImage , proxy} = cardItem
   return (
     <li className='rounded-3xl overflow-hidden shadow-lg group flex  flex-col'>
         <Link href={`blog/${id}`}>
 					<a className=' flex-grow'>
 						<div className='relative aspect-[1.3/1]'>
-							<Image src={cover} alt={title} layout='fill' className=' group-hover:scale-105 translate-transform' placeholder='blur' blurDataURL={previewImage?.dataURIBase64 ?? DEFAULT_BLUR_BASE64}/>
+							<Image src={proxy.cover} alt={title} layout='fill' className=' group-hover:scale-105 translate-transform' placeholder='blur' blurDataURL={previewImage?.dataURIBase64 ?? DEFAULT_BLUR_BASE64}/>
 						</div>
 						<div className='p-6 flext flex-col gap-4 '>
 							<h4 className='font-bold text-2xl group-hover:text-blue-600 transition-colors flex flex-row items-center gap-1'>
-								<IconRenderer icon={icon} alt={title}/>
+								<IconRenderer icon={icon} alt={title} proxyIconUrl={proxy.icon}/>
 								{title}
 							</h4>
 							{ decsription ? (<p className='font-medium text-gray-600'>{decsription}</p>) : null}
