@@ -6,8 +6,8 @@ import Link from 'next/link'
 
 const navLinks = [
   {
-    name : "Tages",
-    link : "/tages"
+    name : "Tags",
+    link : "/tags"
   },
   {
     name : "About",

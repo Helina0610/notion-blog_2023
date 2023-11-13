@@ -1,28 +1,29 @@
 import exp from 'constants'
 import React from 'react'
-import { ParseDatabaseItemsType  } from '@/utils/parseDatabaseItems';
+import { ParsedDatabaseItemType  } from '@/utils/parseDatabaseItems';
 import Link from 'next/link';
 import Image from 'next/image';
 import { describe } from 'node:test';
 import IconRenderer from './IconRenderer';
-import TageList from './tag/TageList';
+import TagList from './tag/TagList';
+import { DEFAULT_BLUR_BASE64 } from '@/const/const';
 
 interface CardItemProps {
-	cardItem : ParseDatabaseItemsType
+	cardItem : ParsedDatabaseItemType
 }
 
 export const CardItem = ({cardItem} : CardItemProps) => {
-	const {cover,decsription,icon,id,published, tags,title} = cardItem
+	const {decsription,icon,id,published, tags,title, previewImage , proxy} = cardItem
   return (
     <li className='rounded-3xl overflow-hidden shadow-lg group flex  flex-col'>
         <Link href={`blog/${id}`}>
 					<a className=' flex-grow'>
 						<div className='relative aspect-[1.3/1]'>
-							<Image src={cover} alt={title} layout='fill' className=' group-hover:scale-105 translate-transform'/>
+							<Image src={proxy.cover} alt={title} layout='fill' className=' group-hover:scale-105 translate-transform' placeholder='blur' blurDataURL={previewImage?.dataURIBase64 ?? DEFAULT_BLUR_BASE64}/>
 						</div>
 						<div className='p-6 flext flex-col gap-4 '>
 							<h4 className='font-bold text-2xl group-hover:text-blue-600 transition-colors flex flex-row items-center gap-1'>
-								<IconRenderer icon={icon} alt={title}/>
+								<IconRenderer icon={icon} alt={title} proxyIconUrl={proxy.icon}/>
 								{title}
 							</h4>
 							{ decsription ? (<p className='font-medium text-gray-600'>{decsription}</p>) : null}
@@ -30,7 +31,7 @@ export const CardItem = ({cardItem} : CardItemProps) => {
 						</div>
 					</a>
 				</Link>
-        { tags.length > 0 ? <TageList tags={tags}/> : null}
+        { tags.length > 0 ? <TagList tags={tags}/> : null}
     </li>
   )
 }

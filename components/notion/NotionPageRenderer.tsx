@@ -50,6 +50,7 @@ const NotionPageRenderer = ({recordMap} : NotionPageRendererProps) => {
       fullPage={true} 
       disableHeader
       showTableOfContents
+      previewImages = {!!recordMap?.preview_images}
       // darkMode={true}
       components={{
         Code

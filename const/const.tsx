@@ -10,3 +10,10 @@ export const COLOR_TABLE = {
   gray: "#e3e2e0",
   default: "#f1f0ef",
 };
+
+export const PAGINATION_RANGE = 3;
+
+export const ITEMS_PER_PAGE = 1;
+
+export const DEFAULT_BLUR_BASE64 =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII=";

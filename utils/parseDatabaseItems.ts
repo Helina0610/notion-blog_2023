@@ -1,7 +1,8 @@
 import { getDatabaseItems } from "@/cms/notionClient";
 import {PageObjectResponse , MultiSelectPropertyItemObjectResponse} from "@notionhq/client/build/src/api-endpoints"
+import { MakePreviewImage } from "./previewImage";
 
-export interface ParseDatabaseItemsType {
+export interface ParsedDatabaseItemType {
     id : string;
     cover : string;
     icon : PageObjectResponse['icon'];
@@ -9,6 +10,11 @@ export interface ParseDatabaseItemsType {
     published : string;
     decsription : string;
     title : string;
+    previewImage? : MakePreviewImage;
+    proxy : {
+      cover : string,
+      icon : string,
+    }
 }
 
 // getDatabaseItems 함수의 리턴값이 response.result 이므로
@@ -16,12 +22,14 @@ export interface ParseDatabaseItemsType {
 //Awaited<ReturnType<typeof getDatabaseItems>> : getDatabaseItems 는 promise 를 가지고 있음,
 // databaseItems 는 promise 의 결과값을 가져옴 -> promise 를 벗겨줘야 함
 export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabaseItems>>) => {
-    const parseItems = items.reduce<ParseDatabaseItemsType[]>((acc, item) => {
+    const parseItems = items.reduce<ParsedDatabaseItemType[]>((acc, item) => {
         //items 는 Array<PageObjectResponse | PartialPageObjectResponse>; 
         // PartialPageObjectResponse 는 Object, id 만 가지고 있음 
         // item에 properties 가 없으면 PartialPageObjectResponse 타입이므로 타입가드 해줘야함
         if(!('properties' in item)) return acc; //acc 스킵
-        const {id, icon, cover} = item;
+        if(item.parent.type !== "database_id") return acc; //데이터베이스 아이디가 아닌것(Block_id) 스킵
+
+        const {id, icon, cover, last_edited_time} = item;
   
         const {태그, 작성일, 설명, 이름} = item.properties
 
@@ -37,14 +45,21 @@ export const parseDatabaseItems = (items : Awaited<ReturnType<typeof getDatabase
 
         const tags = 태그.type === "multi_select" ? 태그.multi_select : [];
 
-        const parseResult:ParseDatabaseItemsType = {
+        const proxyCoverUrl = `/api/getImageFromNotion?type=cover&pageId=${id}&lastEditedTime=${last_edited_time}`;
+        const proxyIconUrl = `/api/getImageFromNotion?type=icon&pageId=${id}&lastEditedTime=${last_edited_time}`;
+
+        const parseResult:ParsedDatabaseItemType = {
             id,
             icon,
             cover : parsedCover,
             published,
             decsription,
             title,
-            tags,        
+            tags,
+            proxy : {
+              cover : proxyCoverUrl,
+              icon : proxyIconUrl,
+            }      
         };
         //새로운 배열을 만들어서 넘겨준다
         return [
