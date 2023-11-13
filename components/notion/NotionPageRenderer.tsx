@@ -44,7 +44,6 @@ interface NotionPageRendererProps {
   recordMap : ExtendedRecordMap
 }
 const NotionPageRenderer = ({recordMap} : NotionPageRendererProps) => {
-  console.log("record :>>" , recordMap);
   return (
     <NotionRenderer 
       recordMap={recordMap} 
