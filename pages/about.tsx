@@ -1,4 +1,5 @@
 import { getPageContent } from '@/cms/notionClient'
+import { PageHead } from '@/components/layout/PageHead';
 import NotionPageRenderer from '@/components/notion/NotionPageRenderer';
 import { GetStaticProps } from 'next'
 import { ExtendedRecordMap } from 'notion-types'
@@ -10,7 +11,10 @@ interface AboutPageProps {
 
 const AboutPage = ({recordMap} : AboutPageProps) => {
   return (
-    <div><NotionPageRenderer recordMap={recordMap}/></div>
+    <div>
+      <PageHead  title='About'/>
+      <NotionPageRenderer recordMap={recordMap}/>
+    </div>
   )
 }
 

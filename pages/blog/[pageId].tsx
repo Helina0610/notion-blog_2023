@@ -1,18 +1,28 @@
 import { getDatabaseItems, getPageContent } from "@/cms/notionClient";
 import Comments from "@/components/common/common";
+import { PageHead } from "@/components/layout/PageHead";
 import NotionPageRenderer from "@/components/notion/NotionPageRenderer";
 import { insertPreviewImageToRecordMap } from "@/utils/previewImage";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ExtendedRecordMap } from "notion-types";
+import { getPageProperty, getPageTitle } from "notion-utils";
 import { ParsedUrlQuery } from "querystring";
 
 interface DetailBlogPageProps {
   recordMap : ExtendedRecordMap;
+  seo : {
+    title : string;
+    description : string;
+    keywords : string;
+    ogImage : string;
+
+  }
 }
 
-const DetailBlogPage = ({recordMap}: DetailBlogPageProps) => {
+const DetailBlogPage = ({recordMap , seo:{title,description,keywords,ogImage}}: DetailBlogPageProps) => {
   return (
     <div>
+      <PageHead title={title} description={description} keywords={keywords} image={ogImage}/>
       <NotionPageRenderer recordMap={recordMap} />
       <Comments />
     </div>
@@ -29,11 +39,23 @@ export const getStaticProps : GetStaticProps<  DetailBlogPageProps,   DetailBlog
   const {pageId} = params!;
   const recordMap = await getPageContent(pageId);
   const previewImage = await insertPreviewImageToRecordMap(recordMap);
+
+  const propertyValue = Object.values(recordMap.block)[0].value;
+  const title = getPageTitle(recordMap);
+  const keywords = getPageProperty<string[]>("태그", propertyValue, recordMap).join(",");
+  const description = getPageProperty<string>("설명", propertyValue, recordMap);
+  const cover = `/api/getImageFromNotion?type=cover&pageId=${pageId}`;
   return {
     props : {
       recordMap : {
         ...recordMap,
         preview_images : previewImage,
+      },
+      seo : {
+        title,
+        description,
+        keywords,
+        ogImage : cover
       }
     },
     revalidate : 300 //생명수명 유저가 나간 뒤 5분을 세고 5분동안 다른 유저가 들어오면 새롭게 빌드한 페이지 보여줌 
