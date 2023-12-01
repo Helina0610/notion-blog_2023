@@ -16,15 +16,20 @@ export default async function handler(
 
   const pageItem = await getPageItem(pageId.toString());
 
-  const parsedPageItem = parseDatabaseItems([pageItem])[0];
+  const {id} = pageItem; 
 
-  const { cover, icon } = parsedPageItem;
+  //const parsedPageItem = parseDatabaseItems([pageItem])[0];
+  if(!("properties" in pageItem)) throw new Error("PageItem is not exist");
+
+  const { cover, icon } = pageItem;
+
+  const parsedCover = cover?.type === "file" ? cover.file.url : cover?.external.url ?? "";
 
   let url = "";
 
   switch (type) {
     case "cover":
-      url = cover;
+      url = parsedCover;
       break;
 
     case "icon":
