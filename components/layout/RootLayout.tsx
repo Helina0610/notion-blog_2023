@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from './Header';
 import Footer from './Footer';
+import { PageHead } from './PageHead';
 
 interface RootLayoutProps{
     children : React.ReactNode;
@@ -9,7 +10,8 @@ interface RootLayoutProps{
 const RootLayout = ({children} : RootLayoutProps) => {
   return (
     <>
-        <Header/>
+        <PageHead/>
+        <Header />
         <main>{children}</main>
         <Footer/>
     </>

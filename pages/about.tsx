@@ -1,4 +1,5 @@
 import { getPageContent } from '@/cms/notionClient'
+import { PageHead } from '@/components/layout/PageHead';
 import NotionPageRenderer from '@/components/notion/NotionPageRenderer';
 import { GetStaticProps } from 'next'
 import { ExtendedRecordMap } from 'notion-types'
@@ -6,11 +7,15 @@ import React from 'react'
 
 interface AboutPageProps {
   recordMap : ExtendedRecordMap;
+  ogImage : string;
 }
 
-const AboutPage = ({recordMap} : AboutPageProps) => {
+const AboutPage = ({recordMap, ogImage} : AboutPageProps) => {
   return (
-    <div><NotionPageRenderer recordMap={recordMap}/></div>
+    <div>
+      <PageHead  title='About' image={ogImage}/>
+      <NotionPageRenderer recordMap={recordMap}/>
+    </div>
   )
 }
 
@@ -23,9 +28,12 @@ export const getStaticProps : GetStaticProps =async () => {
 
   const recordMap = await getPageContent(profileId);
 
+  const cover = `/api/getImageFromNotion?type=cover&pageId=${profileId}`;
+
   return {
     props : {
-      recordMap
+      recordMap,
+      ogImage : cover
     },
     revalidate : 300
   }
